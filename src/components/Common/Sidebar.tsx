@@ -13,7 +13,7 @@ import SubCategory from './SubCategory';
 import { Tab, Disclosure } from '@headlessui/react';
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
-import { NotionIcon } from 'assets/NotionIcon';
+import { ResumeIcon } from 'assets/ResumeIcon';
 import { GithubIcon } from 'assets/GithubIcon';
 import { MailIcon } from 'assets/MailIcon';
 import ScrollProgressBar from './ScrollProgressBar';
@@ -23,40 +23,74 @@ type SidebarProps = {
 };
 
 type ProgressBarProps = {
-  inHeader: {
+  file1: {
     childImageSharp: {
       gatsbyImageData: IGatsbyImageData;
     };
   };
-  inSidebar: {
+  file2: {
     childImageSharp: {
       gatsbyImageData: IGatsbyImageData;
     };
   };
 };
 
+type SocialProps = {
+  site: {
+    siteMetadata: {
+      author: {
+        name: string;
+        social: {
+          resume: string;
+          github: string;
+          email: string;
+        };
+      };
+    };
+  };
+};
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 const Sidebar = ({ children }: SidebarProps) => {
   const {
-    inHeader: {
+    file1: {
       childImageSharp: { gatsbyImageData: goal },
     },
-    inSidebar: {
+    file2: {
       childImageSharp: { gatsbyImageData: profile },
     },
-  }: ProgressBarProps = useStaticQuery(graphql`
+    site: {
+      siteMetadata: {
+        author: {
+          name,
+          social: { resume, github, email },
+        },
+      },
+    },
+  }: ProgressBarProps & SocialProps = useStaticQuery(graphql`
     query getHomeBtnImg {
-      inHeader: file(name: { eq: "goal" }) {
+      file1: file(name: { eq: "goal" }) {
         childImageSharp {
           gatsbyImageData(width: 150)
         }
       }
-      inSidebar: file(name: { eq: "profile" }) {
+      file2: file(name: { eq: "profile" }) {
         childImageSharp {
           gatsbyImageData(width: 120, height: 120)
+        }
+      }
+      site: site {
+        siteMetadata {
+          author {
+            name
+            social {
+              resume
+              github
+              email
+            }
+          }
         }
       }
     }
@@ -166,19 +200,16 @@ const Sidebar = ({ children }: SidebarProps) => {
                     />
                   </Link>
                   <div className="mb-6 font-bold text-slate-900 text-md">
-                    gusah009
+                    {name}
                   </div>
                   <div className="flex space-x-6">
-                    <Link
-                      to="https://devblog-gusah009.notion.site/gusah009-1f41013097914875a99b6af4134bce9e"
-                      target="_blank"
-                    >
-                      <NotionIcon />
+                    <Link to={resume} target="_blank">
+                      <ResumeIcon />
                     </Link>
-                    <Link to="https://github.com/gusah009" target="_blank">
+                    <Link to={github} target="_blank">
                       <GithubIcon />
                     </Link>
-                    <Link to="mailto:gusah009@naver.com">
+                    <Link to={`mailto:${email}`}>
                       <MailIcon />
                     </Link>
                   </div>
@@ -265,20 +296,15 @@ const Sidebar = ({ children }: SidebarProps) => {
                 alt="profile"
               />
             </Link>
-            <div className="mb-5 font-bold text-slate-900 text-md">
-              gusah009
-            </div>
+            <div className="mb-5 font-bold text-slate-900 text-md">{name}</div>
             <div className="flex space-x-6">
-              <Link
-                to="https://devblog-gusah009.notion.site/gusah009-1f41013097914875a99b6af4134bce9e"
-                target="_blank"
-              >
-                <NotionIcon />
+              <Link to={resume} target="_blank">
+                <ResumeIcon />
               </Link>
-              <Link to="https://github.com/gusah009" target="_blank">
+              <Link to={github} target="_blank">
                 <GithubIcon />
               </Link>
-              <Link to="mailto:gusah009@naver.com">
+              <Link to={`mailto:${email}`}>
                 <MailIcon />
               </Link>
             </div>
