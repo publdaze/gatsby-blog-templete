@@ -1,10 +1,7 @@
+const metaConfig = require('./gatsby-meta-config');
+
 module.exports = {
-  siteMetadata: {
-    title: `gusah009의 개발 블로그`,
-    description: `gusah009의 개발 블로그입니다.`,
-    author: `정현모`,
-    siteUrl: 'https://gusah009.github.io',
-  },
+  siteMetadata: metaConfig,
   plugins: [
     {
       resolve: 'gatsby-plugin-typescript',
@@ -97,7 +94,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-canonical-urls',
       options: {
-        siteUrl: 'https://gusah009.github.io',
+        siteUrl: metaConfig.meta.siteUrl,
         stripQueryString: true,
       },
     },

@@ -17,9 +17,11 @@ type IndexPageProps = {
   data: {
     site: {
       siteMetadata: {
-        title: string;
-        description: string;
-        siteUrl: string;
+        meta: {
+          title: string;
+          description: string;
+          siteUrl: string;
+        };
       };
     };
     allMarkdownRemark: {
@@ -38,7 +40,9 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
   location: { search },
   data: {
     site: {
-      siteMetadata: { title, description, siteUrl },
+      siteMetadata: {
+        meta: { title, description, siteUrl },
+      },
     },
     allMarkdownRemark: { edges },
     file: {
@@ -102,9 +106,11 @@ export const getPostList = graphql`
   query getPostList {
     site {
       siteMetadata {
-        title
-        description
-        siteUrl
+        meta {
+          title
+          description
+          siteUrl
+        }
       }
     }
     allMarkdownRemark(
