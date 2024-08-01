@@ -19,11 +19,11 @@ type ProgressBarProps = {
 const ScrollProgressBar: FunctionComponent = () => {
   const {
     file: {
-      childImageSharp: { gatsbyImageData: ghost },
+      childImageSharp: { gatsbyImageData: progress },
     },
   }: ProgressBarProps = useStaticQuery(graphql`
     query getProgressBarImg {
-      file(name: { eq: "ghost" }) {
+      file(name: { eq: "progress" }) {
         childImageSharp {
           gatsbyImageData(height: 100)
         }
@@ -56,7 +56,7 @@ const ScrollProgressBar: FunctionComponent = () => {
   }, [handleScroll]);
 
   return (
-    <div className="flex-1 flex">
+    <div className="flex flex-1">
       <Link
         className="flex items-center"
         to="" /* TODO */
@@ -66,7 +66,7 @@ const ScrollProgressBar: FunctionComponent = () => {
           className={`${
             width < 98 ? 'w-8' : `w-${100 - width}`
           } drop-shadow-md`}
-          image={ghost}
+          image={progress}
           alt="Progress Image"
         />
       </Link>

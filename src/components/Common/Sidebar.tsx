@@ -18,14 +18,17 @@ import { GithubIcon } from 'assets/GithubIcon';
 import { MailIcon } from 'assets/MailIcon';
 import ScrollProgressBar from './ScrollProgressBar';
 
-const profileImg = 'https://avatars.githubusercontent.com/u/26597702?v=4';
-
 type SidebarProps = {
   children: ReactNode;
 };
 
 type ProgressBarProps = {
-  file: {
+  inHeader: {
+    childImageSharp: {
+      gatsbyImageData: IGatsbyImageData;
+    };
+  };
+  inSidebar: {
     childImageSharp: {
       gatsbyImageData: IGatsbyImageData;
     };
@@ -38,14 +41,22 @@ function classNames(...classes: string[]) {
 
 const Sidebar = ({ children }: SidebarProps) => {
   const {
-    file: {
-      childImageSharp: { gatsbyImageData: grave },
+    inHeader: {
+      childImageSharp: { gatsbyImageData: goal },
+    },
+    inSidebar: {
+      childImageSharp: { gatsbyImageData: profile },
     },
   }: ProgressBarProps = useStaticQuery(graphql`
     query getHomeBtnImg {
-      file(name: { eq: "grave" }) {
+      inHeader: file(name: { eq: "goal" }) {
         childImageSharp {
           gatsbyImageData(width: 150)
+        }
+      }
+      inSidebar: file(name: { eq: "profile" }) {
+        childImageSharp {
+          gatsbyImageData(width: 120, height: 120)
         }
       }
     }
@@ -112,7 +123,7 @@ const Sidebar = ({ children }: SidebarProps) => {
             <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
           </Transition.Child>
 
-          <div className="fixed inset-0 flex z-40">
+          <div className="fixed inset-0 z-40 flex">
             <Transition.Child
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"
@@ -122,7 +133,7 @@ const Sidebar = ({ children }: SidebarProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
+              <Dialog.Panel className="relative flex flex-col flex-1 w-full max-w-xs pt-5 pb-4 bg-white">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -132,29 +143,29 @@ const Sidebar = ({ children }: SidebarProps) => {
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <div className="absolute top-0 right-0 -mr-12 pt-2">
+                  <div className="absolute top-0 right-0 pt-2 -mr-12">
                     <button
                       type="button"
-                      className="hidden -ml-24 md:flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                      className="items-center justify-center hidden w-10 h-10 -ml-24 rounded-full md:flex focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                       onClick={() => setSidebarOpen(false)}
                     >
                       <span className="sr-only">Close sidebar</span>
                       <XIcon
-                        className="h-6 w-6 text-black"
+                        className="w-6 h-6 text-black"
                         aria-hidden="true"
                       />
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="w-full flex flex-col items-center px-4 mt-10">
+                <div className="flex flex-col items-center w-full px-4 mt-10">
                   <Link to="/">
-                    <img
+                    <GatsbyImage
                       className="w-20 h-20 mb-3 rounded-md"
-                      src={profileImg}
+                      image={profile}
                       alt="profile"
                     />
                   </Link>
-                  <div className=" text-slate-900 text-md font-bold mb-6">
+                  <div className="mb-6 font-bold text-slate-900 text-md">
                     gusah009
                   </div>
                   <div className="flex space-x-6">
@@ -179,7 +190,7 @@ const Sidebar = ({ children }: SidebarProps) => {
                       <Disclosure key={category}>
                         {({ open }) => (
                           <Fragment>
-                            <Disclosure.Button className="flex mt-1 w-full justify-between ui-not-open:rounded-md ui-open:rounded-t-md px-4 py-2 text-left text-sm font-medium text-slate-900 hover:bg-slate-200 ui-not-open:bg-white">
+                            <Disclosure.Button className="flex justify-between w-full px-4 py-2 mt-1 text-sm font-medium text-left ui-not-open:rounded-md ui-open:rounded-t-md text-slate-900 hover:bg-slate-200 ui-not-open:bg-white">
                               <span>{category}</span>
                               <ChevronRightIcon
                                 className={`${
@@ -234,27 +245,27 @@ const Sidebar = ({ children }: SidebarProps) => {
             : ''
         }`}
       >
-        <div className="absolute top-0 right-0 -mr-12 pt-2">
+        <div className="absolute top-0 right-0 pt-2 -mr-12">
           <button
             type="button"
             className="-ml-[90px] flex items-center justify-center h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             onClick={() => setSidebarForDeskOpen(false)}
           >
             <span className="sr-only">Close sidebar</span>
-            <XIcon className="h-6 w-6 text-black" aria-hidden="true" />
+            <XIcon className="w-6 h-6 text-black" aria-hidden="true" />
           </button>
         </div>
         {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex flex-col flex-grow bg-white shadow-lg shadow-slate-200 overflow-y-auto">
-          <div className="w-full flex flex-col items-center px-4 mt-14 ">
+        <div className="flex flex-col flex-grow overflow-y-auto bg-white shadow-lg shadow-slate-200">
+          <div className="flex flex-col items-center w-full px-4 mt-14 ">
             <Link to="/">
-              <img
+              <GatsbyImage
                 className="w-20 h-20 mb-3 rounded-md"
-                src={profileImg}
+                image={profile}
                 alt="profile"
               />
             </Link>
-            <div className=" text-slate-900 text-md font-bold mb-5">
+            <div className="mb-5 font-bold text-slate-900 text-md">
               gusah009
             </div>
             <div className="flex space-x-6">
@@ -278,7 +289,7 @@ const Sidebar = ({ children }: SidebarProps) => {
               <Disclosure key={category}>
                 {({ open }) => (
                   <Fragment>
-                    <Disclosure.Button className="flex mt-1 w-full justify-between ui-not-open:rounded-md ui-open:rounded-t-md px-4 py-2 text-left text-sm font-medium text-slate-900 hover:bg-slate-200">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 mt-1 text-sm font-medium text-left ui-not-open:rounded-md ui-open:rounded-t-md text-slate-900 hover:bg-slate-200">
                       <span>{category}</span>
                       <ChevronRightIcon
                         className={`${
@@ -323,14 +334,14 @@ const Sidebar = ({ children }: SidebarProps) => {
           sidebarForDeskOpen ? 'lg:pl-64' : ''
         } flex flex-col flex-1`}
       >
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-12 bg-white shadow">
+        <div className="sticky top-0 z-10 flex flex-shrink-0 h-12 bg-white shadow">
           <button
             type="button"
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
-            <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+            <MenuAlt2Icon className="w-6 h-6" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -340,13 +351,13 @@ const Sidebar = ({ children }: SidebarProps) => {
             onClick={() => setSidebarForDeskOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
-            <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+            <MenuAlt2Icon className="w-6 h-6" aria-hidden="true" />
           </button>
           <ScrollProgressBar />
-          <Link className="h-full flex items-end" to="/">
+          <Link className="flex items-end h-full" to="/">
             <GatsbyImage
-              className="w-9 -ml-4 mr-2 drop-shadow-md"
-              image={grave}
+              className="mr-2 -ml-4 w-9 drop-shadow-md"
+              image={goal}
               alt="Progress Image"
             />
           </Link>
