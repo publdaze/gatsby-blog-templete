@@ -1,7 +1,17 @@
+import { graphql, useStaticQuery } from 'gatsby';
 import React, { createRef, FunctionComponent, useEffect } from 'react';
 
 const src = 'https://utteranc.es/client.js';
-const repo = 'gusah009/gusah009.github.io';
+
+type CommentWidgetProps = {
+  site: {
+    siteMetadata: {
+      comments: {
+        utterances: { repo: string };
+      };
+    };
+  };
+};
 
 type UtterancesAttributesType = {
   src: string;
@@ -14,6 +24,28 @@ type UtterancesAttributesType = {
 };
 
 const CommentWidget: FunctionComponent = function () {
+  const {
+    site: {
+      siteMetadata: {
+        comments: {
+          utterances: { repo },
+        },
+      },
+    },
+  }: CommentWidgetProps = useStaticQuery(graphql`
+    query getComments {
+      site {
+        siteMetadata {
+          comments {
+            utterances {
+              repo
+            }
+          }
+        }
+      }
+    }
+  `);
+
   const element = createRef<HTMLDivElement>();
 
   useEffect(() => {

@@ -21,4 +21,9 @@ module.exports = {
       end: `를 고민하는 개발자 정현모입니다.`,
     },
   },
+  comments: {
+    utterances: {
+      repo: 'gusah009/gusah009.github.io',
+    },
+  },
 };
