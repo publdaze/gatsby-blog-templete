@@ -13,4 +13,12 @@ module.exports = {
       email: ``, // `__@example.com`,
     },
   },
+  introduction: {
+    sub: `안녕하세요!`,
+    main: {
+      start: `항상`,
+      highlight: `"왜?"`,
+      end: `를 고민하는 개발자 정현모입니다.`,
+    },
+  },
 };

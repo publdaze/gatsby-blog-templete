@@ -22,6 +22,10 @@ type IndexPageProps = {
           description: string;
           siteUrl: string;
         };
+        introduction: {
+          sub: string;
+          main: { start: ``; highlight: ``; end: `` };
+        };
       };
     };
     allMarkdownRemark: {
@@ -42,6 +46,7 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
     site: {
       siteMetadata: {
         meta: { title, description, siteUrl },
+        introduction,
       },
     },
     allMarkdownRemark: { edges },
@@ -90,7 +95,10 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
       url={siteUrl}
       image={publicURL}
     >
-      <Introduction profileImage={gatsbyImageData} />
+      <Introduction
+        profileImage={gatsbyImageData}
+        introduction={introduction}
+      />
       {/* <CategoryList
         selectedCategory={selectedCategory}
         categoryList={categoryList}
@@ -110,6 +118,14 @@ export const getPostList = graphql`
           title
           description
           siteUrl
+        }
+        introduction {
+          sub
+          main {
+            start
+            highlight
+            end
+          }
         }
       }
     }
