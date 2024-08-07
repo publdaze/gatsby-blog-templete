@@ -46,6 +46,10 @@ type SocialProps = {
           email: string;
         };
       };
+      categories: {
+        name: string;
+        subCategories: { name: string; href: string }[];
+      }[];
     };
   };
 };
@@ -67,6 +71,7 @@ const Sidebar = ({ children }: SidebarProps) => {
           name,
           social: { resume, github, email },
         },
+        categories,
       },
     },
   }: ProgressBarProps & SocialProps = useStaticQuery(graphql`
@@ -91,6 +96,13 @@ const Sidebar = ({ children }: SidebarProps) => {
               email
             }
           }
+          categories {
+            name
+            subCategories {
+              name
+              href
+            }
+          }
         }
       }
     }
@@ -98,44 +110,6 @@ const Sidebar = ({ children }: SidebarProps) => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarForDeskOpen, setSidebarForDeskOpen] = useState(true);
-  const categories = {
-    JAVA: [
-      {
-        name: 'Clean Code',
-        href: '/?category=clean_code',
-      },
-      {
-        name: 'Effective Java',
-        href: '/?category=effective_java',
-      },
-      {
-        name: 'etc',
-        href: '/?category=etc',
-      },
-    ],
-    PROJECTS: [
-      {
-        name: 'PNU-pathfinder',
-        href: '/?category=pathfinder',
-      },
-      {
-        name: 'keeper homepage',
-        href: '/?category=keeper_homepage',
-      },
-    ],
-    ETC: [
-      {
-        name: 'Git',
-        href: '/?category=Git',
-      },
-    ],
-    일상: [
-      {
-        name: '후기',
-        href: '/?category=후기',
-      },
-    ],
-  };
 
   return (
     <div>
@@ -216,47 +190,45 @@ const Sidebar = ({ children }: SidebarProps) => {
                 </div>
                 {/*  SubNav -> */}
                 <div className="w-full px-5 pt-12">
-                  {Object.entries(categories).map(
-                    ([category, SubCategories]) => (
-                      <Disclosure key={category}>
-                        {({ open }) => (
-                          <Fragment>
-                            <Disclosure.Button className="flex justify-between w-full px-4 py-2 mt-1 text-sm font-medium text-left ui-not-open:rounded-md ui-open:rounded-t-md text-slate-900 hover:bg-slate-200 ui-not-open:bg-white">
-                              <span>{category}</span>
-                              <ChevronRightIcon
-                                className={`${
-                                  open ? 'rotate-90 transform' : ''
-                                } h-5 w-5 text-slate-500`}
-                              />
-                            </Disclosure.Button>
-                            <Tab.Group vertical>
-                              <div className="ml-4 border-l-2">
-                                {SubCategories.map(subCategory => (
-                                  <Disclosure.Panel key={subCategory.name}>
-                                    <Link to={subCategory.href}>
-                                      <Tab
-                                        key={subCategory.name}
-                                        className={({ selected }) =>
-                                          classNames(
-                                            selected
-                                              ? 'text-slate-600 font-bold'
-                                              : 'text-slate-400 hover:bg-slate-200 font-medium',
-                                            'w-full group flex items-center px-4 py-2 text-sm',
-                                          )
-                                        }
-                                      >
-                                        {subCategory.name}
-                                      </Tab>
-                                    </Link>
-                                  </Disclosure.Panel>
-                                ))}
-                              </div>
-                            </Tab.Group>
-                          </Fragment>
-                        )}
-                      </Disclosure>
-                    ),
-                  )}
+                  {categories.map(({ name: category, subCategories }) => (
+                    <Disclosure key={category}>
+                      {({ open }) => (
+                        <Fragment>
+                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 mt-1 text-sm font-medium text-left ui-not-open:rounded-md ui-open:rounded-t-md text-slate-900 hover:bg-slate-200 ui-not-open:bg-white">
+                            <span>{category}</span>
+                            <ChevronRightIcon
+                              className={`${
+                                open ? 'rotate-90 transform' : ''
+                              } h-5 w-5 text-slate-500`}
+                            />
+                          </Disclosure.Button>
+                          <Tab.Group vertical>
+                            <div className="ml-4 border-l-2">
+                              {subCategories.map(subCategory => (
+                                <Disclosure.Panel key={subCategory.name}>
+                                  <Link to={subCategory.href}>
+                                    <Tab
+                                      key={subCategory.name}
+                                      className={({ selected }) =>
+                                        classNames(
+                                          selected
+                                            ? 'text-slate-600 font-bold'
+                                            : 'text-slate-400 hover:bg-slate-200 font-medium',
+                                          'w-full group flex items-center px-4 py-2 text-sm',
+                                        )
+                                      }
+                                    >
+                                      {subCategory.name}
+                                    </Tab>
+                                  </Link>
+                                </Disclosure.Panel>
+                              ))}
+                            </div>
+                          </Tab.Group>
+                        </Fragment>
+                      )}
+                    </Disclosure>
+                  ))}
                 </div>
                 {/* <- SubNav */}
               </Dialog.Panel>
@@ -311,7 +283,7 @@ const Sidebar = ({ children }: SidebarProps) => {
           </div>
           {/*  SubNav -> */}
           <div className="w-full px-3 pt-8">
-            {Object.entries(categories).map(([category, SubCategories]) => (
+            {categories.map(({ name: category, subCategories }) => (
               <Disclosure key={category}>
                 {({ open }) => (
                   <Fragment>
@@ -325,25 +297,26 @@ const Sidebar = ({ children }: SidebarProps) => {
                     </Disclosure.Button>
                     <Tab.Group vertical>
                       <div className="ml-4 border-l-2">
-                        {SubCategories.map(subCategory => (
-                          <Disclosure.Panel key={subCategory.name}>
-                            <Link to={subCategory.href}>
-                              <Tab
-                                key={subCategory.name}
-                                className={({ selected }) =>
-                                  classNames(
-                                    selected
-                                      ? 'text-slate-600 font-extrabold'
-                                      : 'text-slate-400 hover:bg-slate-200 font-medium',
-                                    'w-full group flex items-center px-4 py-2 text-sm',
-                                  )
-                                }
-                              >
-                                {subCategory.name}
-                              </Tab>
-                            </Link>
-                          </Disclosure.Panel>
-                        ))}
+                        {subCategories &&
+                          subCategories.map(subCategory => (
+                            <Disclosure.Panel key={subCategory.name}>
+                              <Link to={subCategory.href}>
+                                <Tab
+                                  key={subCategory.name}
+                                  className={({ selected }) =>
+                                    classNames(
+                                      selected
+                                        ? 'text-slate-600 font-extrabold'
+                                        : 'text-slate-400 hover:bg-slate-200 font-medium',
+                                      'w-full group flex items-center px-4 py-2 text-sm',
+                                    )
+                                  }
+                                >
+                                  {subCategory.name}
+                                </Tab>
+                              </Link>
+                            </Disclosure.Panel>
+                          ))}
                       </div>
                     </Tab.Group>
                   </Fragment>
@@ -382,7 +355,7 @@ const Sidebar = ({ children }: SidebarProps) => {
           <ScrollProgressBar />
           <Link className="flex items-end h-full" to="/">
             <GatsbyImage
-              className="mr-2 -ml-4 w-9 drop-shadow-md"
+              className="w-16 mr-2 -ml-4 drop-shadow-md"
               image={goal}
               alt="Progress Image"
             />
