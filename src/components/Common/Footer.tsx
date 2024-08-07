@@ -1,11 +1,36 @@
+import { graphql, useStaticQuery } from 'gatsby';
 import React, { FunctionComponent } from 'react';
 
 const Footer: FunctionComponent = function () {
+  const {
+    site: {
+      siteMetadata: {
+        author: { name },
+      },
+    },
+  }: {
+    site: {
+      siteMetadata: {
+        author: { name: string };
+      };
+    };
+  } = useStaticQuery(graphql`
+    query getName {
+      site {
+        siteMetadata {
+          author {
+            name
+          }
+        }
+      }
+    }
+  `);
+
   return (
     // FooterWrapper
-    <footer className=" grid place-items-center mt-auto p-12 text-xs md:text-sm text-center leading-6 text-gray-600">
+    <footer className="grid p-12 mt-auto text-xs leading-6 text-center text-gray-600 place-items-center md:text-sm">
       Thank You for Visiting My Blog, Have a Good Day 😆
-      <br />© 2022 정현모, Powered By Gatsby.
+      <br />© {new Date().getFullYear()} {name}, Powered By Gatsby.
     </footer>
   );
 };
