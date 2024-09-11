@@ -1,4 +1,4 @@
-const metaConfig = require('./gatsby-meta-config');
+const metaConfig = require('../gatsby-meta-config');
 
 module.exports = {
   siteMetadata: metaConfig,
@@ -16,7 +16,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `contents`,
-        path: `${__dirname}/contents`,
+        path: `${__dirname}/../contents`,
       },
     },
     `gatsby-transformer-sharp`,
@@ -81,20 +81,20 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `contents`,
-        path: `${__dirname}/contents`,
+        path: `${__dirname}/../contents`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/static`,
+        path: `${__dirname}/../static`,
       },
     },
     {
       resolve: 'gatsby-plugin-canonical-urls',
       options: {
-        siteUrl: metaConfig.meta.siteUrl,
+        siteUrl: metaConfig.siteUrl,
         stripQueryString: true,
       },
     },

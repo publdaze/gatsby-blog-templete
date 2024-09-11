@@ -1,24 +1,24 @@
 module.exports = {
+  siteUrl: 'http://publdaze.github.io/test',
   meta: {
-    title: `__의 블로그`,
-    description: `__의 블로그입니다.`,
-    author: `__`,
-    siteUrl: 'https://__.github.io',
+    title: `publdaze의 블로그`,
+    description: `publdaze의 블로그입니다.`,
+    author: `publdaze`,
   },
   author: {
-    name: `__`,
+    name: `publdaze`,
     social: {
-      resume: `https://devblog-gusah009.Resume.site/gusah009-1f41013097914875a99b6af4134bce9e`, // `https://__.github.io/resume`,
-      github: ``, // `https://github.com/__`,
-      email: ``, // `__@example.com`,
+      resume: ``, // `https://publdaze.github.io/resume`,
+      github: ``, // `https://github.com/publdaze`,
+      email: ``, // `publdaze@example.com`,
     },
   },
   introduction: {
     sub: `안녕하세요!`,
     main: {
-      start: `항상`,
-      highlight: `"왜?"`,
-      end: `를 고민하는 개발자 정현모입니다.`,
+      start: `핸모밖에 모르는`,
+      highlight: `"바보"`,
+      end: `김은지입니다.`,
     },
   },
   categories: [
@@ -48,7 +48,7 @@ module.exports = {
   ],
   comments: {
     utterances: {
-      repo: 'gusah009/gusah009.github.io',
+      repo: 'publdaze/test',
     },
   },
 };

@@ -114,10 +114,10 @@ export const getPostList = graphql`
   query getPostList {
     site {
       siteMetadata {
+        siteUrl
         meta {
           title
           description
-          siteUrl
         }
         introduction {
           sub
