@@ -58,14 +58,12 @@ const ScrollProgressBar: FunctionComponent = () => {
   return (
     <div className="flex flex-1">
       <Link
-        className="flex items-center"
+        className="flex items-end"
         to="" /* TODO */
         style={{ marginLeft: `${width}%` }}
       >
         <GatsbyImage
-          className={`${
-            width < 98 ? 'w-8' : `w-${100 - width}`
-          } drop-shadow-md`}
+          className={`w-8 drop-shadow-md`}
           image={progress}
           alt="Progress Image"
         />

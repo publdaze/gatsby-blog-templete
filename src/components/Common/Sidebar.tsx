@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, ReactNode } from 'react';
+import { Fragment, useState, useEffect, ReactNode, useCallback } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon,
@@ -111,6 +111,30 @@ const Sidebar = ({ children }: SidebarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarForDeskOpen, setSidebarForDeskOpen] = useState(true);
 
+  const [width, setWidth] = useState<number>(0);
+
+  const handleScroll = useCallback((): void => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    if (scrollTop === 0) {
+      setWidth(0);
+      return;
+    }
+
+    const windowHeight: number = scrollHeight - clientHeight;
+    const currentPercent: number = scrollTop / windowHeight;
+
+    setWidth(currentPercent * 100);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleScroll]);
+
   return (
     <div>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -204,25 +228,26 @@ const Sidebar = ({ children }: SidebarProps) => {
                           </Disclosure.Button>
                           <Tab.Group vertical>
                             <div className="ml-4 border-l-2">
-                              {subCategories.map(subCategory => (
-                                <Disclosure.Panel key={subCategory.name}>
-                                  <Link to={subCategory.href}>
-                                    <Tab
-                                      key={subCategory.name}
-                                      className={({ selected }) =>
-                                        classNames(
-                                          selected
-                                            ? 'text-slate-600 font-bold'
-                                            : 'text-slate-400 hover:bg-slate-200 font-medium',
-                                          'w-full group flex items-center px-4 py-2 text-sm',
-                                        )
-                                      }
-                                    >
-                                      {subCategory.name}
-                                    </Tab>
-                                  </Link>
-                                </Disclosure.Panel>
-                              ))}
+                              {subCategories &&
+                                subCategories.map(subCategory => (
+                                  <Disclosure.Panel key={subCategory.name}>
+                                    <Link to={subCategory.href}>
+                                      <Tab
+                                        key={subCategory.name}
+                                        className={({ selected }) =>
+                                          classNames(
+                                            selected
+                                              ? 'text-slate-600 font-bold'
+                                              : 'text-slate-400 hover:bg-slate-200 font-medium',
+                                            'w-full group flex items-center px-4 py-2 text-sm',
+                                          )
+                                        }
+                                      >
+                                        {subCategory.name}
+                                      </Tab>
+                                    </Link>
+                                  </Disclosure.Panel>
+                                ))}
                             </div>
                           </Tab.Group>
                         </Fragment>
@@ -353,7 +378,12 @@ const Sidebar = ({ children }: SidebarProps) => {
             <MenuAlt2Icon className="w-6 h-6" aria-hidden="true" />
           </button>
           <ScrollProgressBar />
-          <Link className="flex items-end h-full" to="/">
+          <Link
+            className={`flex items-end h-full transition-transform ${
+              width < 99 && '-rotate-45'
+            }`}
+            to="/"
+          >
             <GatsbyImage
               className="w-16 mr-2 -ml-4 drop-shadow-md"
               image={goal}
